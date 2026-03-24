@@ -58,15 +58,16 @@ export default function App() {
           {/* Habit list */}
           <HabitList habits={habits} onToggle={toggle} />
 
-          {/* Footer */}
+          {/* Footer HUD */}
           <div className="mt-auto pt-4">
             <div className="w-full h-px bg-lcd-dark mb-3" />
             <div className="flex justify-between items-center">
-              <span className="text-lcd-dark" style={{ fontSize: 6 }}>
-                {doneCount}/{total} DONE
+              <span className="text-lcd-green lcd-glow" style={{ fontSize: 6 }}>
+                NERU LVL 1
               </span>
-              <span className="text-lcd-dark" style={{ fontSize: 6 }}>
-                {doneCount === total ? 'ALL CLEAR!' : 'KEEP GOING'}
+              <span className="text-lcd-text" style={{ fontSize: 6 }}>
+                {doneCount}/{total}
+                {doneCount === total ? ' ★' : ''}
               </span>
             </div>
           </div>
