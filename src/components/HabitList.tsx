@@ -8,38 +8,46 @@ interface Props {
 export default function HabitList({ habits, onToggle }: Props) {
   return (
     <div className="w-full flex flex-col gap-3">
-      <span className="text-lcd-green" style={{ fontSize: 8 }}>
+      <span style={{ fontFamily: '"Press Start 2P"', fontSize: 7, color: '#74b83e' }}>
         DAILY LOG
       </span>
 
-      {/* Bordered habit list */}
-      <div style={{ border: '1px solid #333' }}>
+      <div className="flex flex-col">
         {habits.map((habit, idx) => (
-          <label
+          <div
             key={habit.id}
             className="flex items-center gap-3 cursor-pointer"
             style={{
-              padding: '10px 12px',
-              borderTop: idx === 0 ? 'none' : '1px solid #1e1e1e',
+              padding: '9px 0',
+              borderTop: idx > 0 ? '1px solid #1a1a1a' : 'none',
             }}
+            onClick={() => onToggle(habit.id)}
           >
-            <input
-              type="checkbox"
-              className="pixel-checkbox"
-              checked={habit.done}
-              onChange={() => onToggle(habit.id)}
-            />
+            {/* Pixel bracket checkbox */}
             <span
               style={{
+                fontFamily: '"Press Start 2P"',
+                fontSize: 8,
+                color: '#74b83e',
+                flexShrink: 0,
+                letterSpacing: -1,
+              }}
+            >
+              {habit.done ? '[X]' : '[ ]'}
+            </span>
+
+            <span
+              style={{
+                fontFamily: '"Press Start 2P"',
                 fontSize: 7,
                 lineHeight: '1.6',
+                color: habit.done ? '#3d6b1f' : '#74b83e',
                 textDecoration: habit.done ? 'line-through' : 'none',
               }}
-              className={habit.done ? 'text-lcd-green opacity-40' : 'text-lcd-green'}
             >
               {habit.label}
             </span>
-          </label>
+          </div>
         ))}
       </div>
     </div>

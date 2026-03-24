@@ -151,7 +151,6 @@ export default function NeruCharacter({ mood }: Props) {
             width: W,
             height: H,
             margin: '0 auto',
-            filter: 'drop-shadow(0px 6px 4px rgba(15, 56, 15, 0.45))',
           }}
           role="img"
           aria-label={`Neru is ${mood}`}
