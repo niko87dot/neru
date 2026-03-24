@@ -7,40 +7,33 @@ interface Props {
 
 export default function HabitList({ habits, onToggle }: Props) {
   return (
-    <div className="w-full flex flex-col gap-3">
-      <span style={{ fontFamily: '"Press Start 2P"', fontSize: 7, color: '#74b83e' }}>
-        DAILY LOG
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <span style={{ fontFamily: '"Press Start 2P"', fontSize: 6, color: '#3d6b1f' }}>
+        // DAILY LOG
       </span>
 
-      <div className="flex flex-col">
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         {habits.map((habit, idx) => (
           <div
             key={habit.id}
-            className="flex items-center gap-3 cursor-pointer"
-            style={{
-              padding: '9px 0',
-              borderTop: idx > 0 ? '1px solid #1a1a1a' : 'none',
-            }}
             onClick={() => onToggle(habit.id)}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 14,
+              padding: '10px 0',
+              borderTop: idx > 0 ? '1px solid #111' : 'none',
+              cursor: 'pointer',
+            }}
           >
-            {/* Pixel bracket checkbox */}
-            <span
-              style={{
-                fontFamily: '"Press Start 2P"',
-                fontSize: 8,
-                color: '#74b83e',
-                flexShrink: 0,
-                letterSpacing: -1,
-              }}
-            >
-              {habit.done ? '[X]' : '[ ]'}
+            <span style={{ fontFamily: '"Press Start 2P"', fontSize: 8, color: '#74b83e', flexShrink: 0 }}>
+              {habit.done ? '[x]' : '[ ]'}
             </span>
-
             <span
               style={{
                 fontFamily: '"Press Start 2P"',
                 fontSize: 7,
-                lineHeight: '1.6',
+                lineHeight: 1.8,
                 color: habit.done ? '#3d6b1f' : '#74b83e',
                 textDecoration: habit.done ? 'line-through' : 'none',
               }}

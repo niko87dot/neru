@@ -4,6 +4,10 @@ import StatusBars from './components/StatusBars'
 import HabitList from './components/HabitList'
 import type { CharacterMood } from './types'
 
+const GREEN  = '#74b83e'
+const DARK   = '#3d6b1f'
+const BG     = '#0a0a0a'
+
 function getMood(doneCount: number, total: number): CharacterMood {
   if (doneCount === total) return 'happy'
   if (doneCount === 0) return 'sad'
@@ -12,11 +16,7 @@ function getMood(doneCount: number, total: number): CharacterMood {
 
 function todayDisplay(): string {
   const d = new Date()
-  return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`
-}
-
-function doneBlocks(done: number, total: number): string {
-  return '▓'.repeat(done) + '░'.repeat(total - done)
+  return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`
 }
 
 export default function App() {
@@ -24,55 +24,59 @@ export default function App() {
   const mood = getMood(doneCount, total)
 
   return (
-    <div className="min-h-screen bg-lcd-bg flex items-start justify-center px-4 py-4">
-      <div
-        className="card-border w-full flex flex-col"
-        style={{ maxWidth: 360, minHeight: 'calc(100vh - 32px)' }}
-      >
+    <div style={{ minHeight: '100vh', backgroundColor: BG, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: 16 }}>
 
-        {/* ── SCREEN ZONE ─────────────────────────────────────────────── */}
-        <div className="bg-gb-bg p-4 flex flex-col gap-4">
+      {/* Outer border — #3d6b1f */}
+      <div style={{ border: `1px solid ${DARK}`, padding: 4, width: '100%', maxWidth: 360 }}>
 
-          {/* Header */}
-          <div className="flex justify-between items-center">
-            <span style={{ fontFamily: '"Press Start 2P"', fontSize: 10, color: '#0f380f' }}>
-              NERU
-            </span>
-            <span style={{ fontFamily: '"Press Start 2P"', fontSize: 5, color: '#306230' }}>
-              {todayDisplay()}
-            </span>
+        {/* Inner border — #74b83e */}
+        <div style={{ border: `1px solid ${GREEN}`, display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 50px)' }}>
+
+          {/* ── HEADER ─────────────────────────────────────────────────── */}
+          <div style={{ padding: '16px 16px 0' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontFamily: '"Press Start 2P"', fontSize: 14, color: GREEN }}>
+                NERU
+              </span>
+              <span style={{ fontFamily: '"Press Start 2P"', fontSize: 5, color: DARK }}>
+                {todayDisplay()}
+              </span>
+            </div>
+            {/* Double pixel divider: thick green + thin dark */}
+            <div style={{ marginTop: 14, height: 2, backgroundColor: GREEN }} />
+            <div style={{ marginTop: 2,  height: 1, backgroundColor: DARK  }} />
           </div>
 
-          {/* Single divider */}
-          <div style={{ height: 1, backgroundColor: '#306230' }} />
-
-          {/* Character */}
-          <div className="flex justify-center py-1">
+          {/* ── CHARACTER ──────────────────────────────────────────────── */}
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '20px 16px 12px' }}>
             <NeruCharacter mood={mood} />
           </div>
 
-          {/* Status bars */}
-          <StatusBars doneCount={doneCount} total={total} />
+          {/* ── STATUS BARS ────────────────────────────────────────────── */}
+          <div style={{ padding: '0 16px 16px' }}>
+            <StatusBars doneCount={doneCount} total={total} />
+          </div>
 
-        </div>
+          {/* ── SECTION DIVIDER ────────────────────────────────────────── */}
+          <div style={{ height: 1, backgroundColor: '#111', margin: '0 16px' }} />
 
-        {/* ── ZONE DIVIDER ────────────────────────────────────────────── */}
-        <div style={{ height: 1, backgroundColor: '#306230' }} />
+          {/* ── HABIT LIST ─────────────────────────────────────────────── */}
+          <div style={{ padding: 16, flex: 1 }}>
+            <HabitList habits={habits} onToggle={toggle} />
+          </div>
 
-        {/* ── CONTROLS ZONE ───────────────────────────────────────────── */}
-        <div className="bg-lcd-bg p-4 flex flex-col gap-5 flex-1">
-
-          <HabitList habits={habits} onToggle={toggle} />
-
-          {/* HUD */}
-          <div className="mt-auto">
-            <div style={{ height: 1, backgroundColor: '#1a1a1a', marginBottom: 8 }} />
-            <div className="flex justify-between items-center">
-              <span style={{ fontFamily: '"Press Start 2P"', fontSize: 6, color: '#74b83e' }}>
-                ♥ NERU LVL 1
+          {/* ── BOTTOM HUD ─────────────────────────────────────────────── */}
+          <div style={{ padding: '0 16px 16px' }}>
+            <div style={{ height: 1, backgroundColor: GREEN, marginBottom: 10 }} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontFamily: '"Press Start 2P"', fontSize: 6, color: GREEN }}>
+                ♥ LVL 1
               </span>
-              <span style={{ fontFamily: '"Press Start 2P"', fontSize: 6, color: '#74b83e' }}>
-                {doneBlocks(doneCount, total)} {doneCount}/{total}
+              <span className="cursor-blink" style={{ fontFamily: '"Press Start 2P"', fontSize: 10, color: DARK }}>
+                _
+              </span>
+              <span style={{ fontFamily: '"Press Start 2P"', fontSize: 6, color: GREEN }}>
+                {doneCount}/{total} DONE
               </span>
             </div>
           </div>

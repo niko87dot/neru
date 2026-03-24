@@ -3,39 +3,32 @@ interface Props {
   total: number
 }
 
-function BlockBar({ filled, total }: { filled: number; total: number }) {
-  const segments = total * 4
-  const filledSegments = Math.round((filled / total) * segments)
+// HP [████████░░] 8/10  — 10 segments scaled from habit count
+function StatBar({ label, doneCount, total }: { label: string; doneCount: number; total: number }) {
+  const SEG = 10
+  const filled = Math.round((doneCount / total) * SEG)
+  const bar = Array.from({ length: SEG }, (_, i) => (i < filled ? '█' : '░')).join('')
 
   return (
-    <span style={{ fontFamily: '"Press Start 2P"', fontSize: 7, lineHeight: 1 }}>
-      {Array.from({ length: segments }, (_, i) => (
-        <span key={i} style={{ color: i < filledSegments ? '#306230' : '#8bac0f' }}>
-          █
-        </span>
-      ))}
-    </span>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <span style={{ fontFamily: '"Press Start 2P"', fontSize: 7, color: '#74b83e', minWidth: 22 }}>
+        {label}
+      </span>
+      <span style={{ fontFamily: '"Press Start 2P"', fontSize: 7, color: '#74b83e' }}>
+        [{bar}]
+      </span>
+      <span style={{ fontFamily: '"Press Start 2P"', fontSize: 6, color: '#3d6b1f' }}>
+        {filled}/10
+      </span>
+    </div>
   )
 }
 
 export default function StatusBars({ doneCount, total }: Props) {
   return (
-    <div className="w-full flex flex-col gap-3">
-
-      <div className="flex flex-col gap-1">
-        <span style={{ fontFamily: '"Press Start 2P"', fontSize: 5, color: '#306230' }}>
-          MOOD
-        </span>
-        <BlockBar filled={doneCount} total={total} />
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <span style={{ fontFamily: '"Press Start 2P"', fontSize: 5, color: '#306230' }}>
-          ENERGY
-        </span>
-        <BlockBar filled={doneCount} total={total} />
-      </div>
-
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <StatBar label="HP" doneCount={doneCount} total={total} />
+      <StatBar label="EN" doneCount={doneCount} total={total} />
     </div>
   )
 }
