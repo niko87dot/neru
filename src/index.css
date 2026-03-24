@@ -10,7 +10,7 @@
 
 html, body, #root {
   height: 100%;
-  background-color: #9bbc0f;
+  background-color: #0a0a0a;
 }
 
 body {
@@ -20,21 +20,21 @@ body {
   image-rendering: pixelated;
 }
 
-/* Pixel checkbox */
+/* ── Checkbox: dark-zone variant (habit list) ────────────────────────── */
 .pixel-checkbox {
   appearance: none;
   -webkit-appearance: none;
   width: 16px;
   height: 16px;
-  border: 2px solid #306230;
-  background: #8bac0f;
+  border: 2px solid #74b83e;
+  background: #0a0a0a;
   cursor: pointer;
   position: relative;
   flex-shrink: 0;
 }
 
 .pixel-checkbox:checked {
-  background: #0f380f;
+  background: #74b83e;
 }
 
 .pixel-checkbox:checked::after {
@@ -44,13 +44,17 @@ body {
   left: 3px;
   width: 6px;
   height: 10px;
-  border: 2px solid #9bbc0f;
+  border: 2px solid #0a0a0a;
   border-top: none;
   border-left: none;
   transform: rotate(45deg);
 }
 
-/* Subtle Gameboy scanlines — dark green on light green */
+/* ── Scanline overlay (screen zone) ─────────────────────────────────── */
+/* Applied via a sibling div so it doesn't interfere with clicks */
+.scanlines {
+  position: relative;
+}
 .scanlines::after {
   content: '';
   position: absolute;
@@ -58,18 +62,15 @@ body {
   background: repeating-linear-gradient(
     0deg,
     transparent,
-    transparent 3px,
-    rgba(15, 56, 15, 0.06) 3px,
-    rgba(15, 56, 15, 0.06) 4px
+    transparent 2px,
+    rgba(15, 56, 15, 0.12) 2px,
+    rgba(15, 56, 15, 0.12) 4px
   );
   pointer-events: none;
-  z-index: 10;
+  z-index: 1;
 }
 
-/* Pixel border utility */
-.pixel-border {
+/* ── Card outer border ────────────────────────────────────────────────── */
+.card-border {
   border: 2px solid #306230;
-  box-shadow:
-    inset 2px 2px 0 #0f380f,
-    inset -2px -2px 0 #0f380f;
 }

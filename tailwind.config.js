@@ -7,10 +7,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        'gb-bg':     '#9bbc0f',  // page background
-        'gb-screen': '#8bac0f',  // card / screen surface
-        'gb-mid':    '#306230',  // borders, dividers, progress fill
-        'gb-dark':   '#0f380f',  // text, pixels, checkbox fill
+        // Screen zone — Gameboy green
+        'gb-bg':     '#9bbc0f',
+        'gb-mid':    '#306230',
+        'gb-dark':   '#0f380f',
+        // Controls zone — dark
+        'lcd-bg':    '#0a0a0a',
+        'lcd-green': '#74b83e',
       },
       fontFamily: {
         pixel: ['"Press Start 2P"', 'monospace'],
