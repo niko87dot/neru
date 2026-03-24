@@ -113,7 +113,7 @@ function buildGrid(mood: CharacterMood): boolean[][] {
 
 // Small CSS sparkle cross rendered at (top, left) relative to the character div
 function Sparkle({ top, left, dim }: { top: number; left: number; dim?: boolean }) {
-  const color = dim ? '#3d6b1f' : '#74b83e'
+  const color = dim ? '#306230' : '#0f380f'
   const s = dim ? 4 : 6
   return (
     <div style={{ position: 'absolute', top, left, width: s * 3, height: s * 3 }}>
@@ -153,9 +153,9 @@ export default function NeruCharacter({ mood }: Props) {
               gap: 2,
             }}
           >
-            <span style={{ fontFamily: '"Press Start 2P"', fontSize: 5, color: '#3d6b1f', lineHeight: 1 }}>Z</span>
-            <span style={{ fontFamily: '"Press Start 2P"', fontSize: 7, color: '#3d6b1f', lineHeight: 1 }}>Z</span>
-            <span style={{ fontFamily: '"Press Start 2P"', fontSize: 9, color: '#74b83e', lineHeight: 1 }}>Z</span>
+            <span style={{ fontFamily: '"Press Start 2P"', fontSize: 5, color: '#306230', lineHeight: 1 }}>Z</span>
+            <span style={{ fontFamily: '"Press Start 2P"', fontSize: 7, color: '#306230', lineHeight: 1 }}>Z</span>
+            <span style={{ fontFamily: '"Press Start 2P"', fontSize: 9, color: '#0f380f', lineHeight: 1 }}>Z</span>
           </div>
         )}
 
@@ -176,7 +176,7 @@ export default function NeruCharacter({ mood }: Props) {
                     top: ri * PIXEL,
                     width: PIXEL,
                     height: PIXEL,
-                    backgroundColor: '#74b83e',
+                    backgroundColor: '#0f380f',
                   }}
                 />
               ) : null
@@ -198,7 +198,7 @@ export default function NeruCharacter({ mood }: Props) {
       {/* Name tag */}
       <div
         style={{
-          border: '1px solid #3d6b1f',
+          border: '1px solid #306230',
           padding: '3px 8px',
           marginTop: 4,
         }}
@@ -207,7 +207,7 @@ export default function NeruCharacter({ mood }: Props) {
           style={{
             fontFamily: '"Press Start 2P"',
             fontSize: 6,
-            color: '#74b83e',
+            color: '#0f380f',
             letterSpacing: 2,
           }}
         >

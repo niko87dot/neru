@@ -20,7 +20,7 @@ export default function App() {
   const mood = getMood(doneCount, total)
 
   return (
-    <div className="min-h-screen bg-lcd-bg flex items-start justify-center px-4 py-4">
+    <div className="min-h-screen bg-gb-bg flex items-start justify-center px-4 py-4">
       {/* Nokia-sized screen container */}
       <div
         className="relative w-full scanlines"
@@ -28,21 +28,21 @@ export default function App() {
       >
         {/* Screen border */}
         <div
-          className="pixel-border bg-lcd-bg p-5 flex flex-col gap-6"
+          className="pixel-border bg-gb-screen p-5 flex flex-col gap-6"
           style={{ minHeight: '100vh' }}
         >
           {/* Header */}
           <div className="flex justify-between items-center">
-            <span className="text-lcd-green lcd-glow" style={{ fontSize: 10 }}>
+            <span className="text-gb-dark" style={{ fontSize: 10 }}>
               NERU
             </span>
-            <span className="text-lcd-dark" style={{ fontSize: 6 }}>
+            <span className="text-gb-mid" style={{ fontSize: 6 }}>
               {todayDisplay()}
             </span>
           </div>
 
           {/* Divider */}
-          <div className="w-full h-px bg-lcd-dark" />
+          <div className="w-full h-px bg-gb-mid" />
 
           {/* Character */}
           <div className="flex justify-center py-2">
@@ -53,19 +53,19 @@ export default function App() {
           <StatusBars doneCount={doneCount} total={total} />
 
           {/* Divider */}
-          <div className="w-full h-px bg-lcd-dark" />
+          <div className="w-full h-px bg-gb-mid" />
 
           {/* Habit list */}
           <HabitList habits={habits} onToggle={toggle} />
 
           {/* Footer HUD */}
           <div className="mt-auto pt-4">
-            <div className="w-full h-px bg-lcd-dark mb-3" />
+            <div className="w-full h-px bg-gb-mid mb-3" />
             <div className="flex justify-between items-center">
-              <span className="text-lcd-green lcd-glow" style={{ fontSize: 6 }}>
+              <span className="text-gb-dark" style={{ fontSize: 6 }}>
                 NERU LVL 1
               </span>
-              <span className="text-lcd-text" style={{ fontSize: 6 }}>
+              <span className="text-gb-mid" style={{ fontSize: 6 }}>
                 {doneCount}/{total}
                 {doneCount === total ? ' ★' : ''}
               </span>

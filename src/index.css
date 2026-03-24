@@ -10,7 +10,7 @@
 
 html, body, #root {
   height: 100%;
-  background-color: #0a0a0a;
+  background-color: #9bbc0f;
 }
 
 body {
@@ -26,15 +26,15 @@ body {
   -webkit-appearance: none;
   width: 16px;
   height: 16px;
-  border: 2px solid #74b83e;
-  background: #0a0a0a;
+  border: 2px solid #306230;
+  background: #8bac0f;
   cursor: pointer;
   position: relative;
   flex-shrink: 0;
 }
 
 .pixel-checkbox:checked {
-  background: #74b83e;
+  background: #0f380f;
 }
 
 .pixel-checkbox:checked::after {
@@ -44,13 +44,13 @@ body {
   left: 3px;
   width: 6px;
   height: 10px;
-  border: 2px solid #0a0a0a;
+  border: 2px solid #9bbc0f;
   border-top: none;
   border-left: none;
   transform: rotate(45deg);
 }
 
-/* Scanline overlay */
+/* Subtle Gameboy scanlines — dark green on light green */
 .scanlines::after {
   content: '';
   position: absolute;
@@ -58,9 +58,9 @@ body {
   background: repeating-linear-gradient(
     0deg,
     transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.15) 2px,
-    rgba(0, 0, 0, 0.15) 4px
+    transparent 3px,
+    rgba(15, 56, 15, 0.06) 3px,
+    rgba(15, 56, 15, 0.06) 4px
   );
   pointer-events: none;
   z-index: 10;
@@ -68,15 +68,8 @@ body {
 
 /* Pixel border utility */
 .pixel-border {
-  border: 2px solid #74b83e;
+  border: 2px solid #306230;
   box-shadow:
-    inset 2px 2px 0 #3d6b1f,
-    inset -2px -2px 0 #3d6b1f;
-}
-
-/* LCD glow on text */
-.lcd-glow {
-  text-shadow:
-    0 0 8px rgba(116, 184, 62, 0.6),
-    0 0 2px rgba(116, 184, 62, 0.3);
+    inset 2px 2px 0 #0f380f,
+    inset -2px -2px 0 #0f380f;
 }

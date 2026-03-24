@@ -4,8 +4,8 @@
   "description": "Pixel habit tracker for the dedicated",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a0a0a",
-  "theme_color": "#0a0a0a",
+  "background_color": "#9bbc0f",
+  "theme_color": "#9bbc0f",
   "orientation": "portrait",
   "icons": [
     {

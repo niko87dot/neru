@@ -7,11 +7,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        'lcd-bg': '#0a0a0a',
-        'lcd-green': '#74b83e',
-        'lcd-dark': '#3d6b1f',
-        'lcd-text': '#c8e6a0',
-        'lcd-dim': '#2a4a10',
+        'gb-bg':     '#9bbc0f',  // page background
+        'gb-screen': '#8bac0f',  // card / screen surface
+        'gb-mid':    '#306230',  // borders, dividers, progress fill
+        'gb-dark':   '#0f380f',  // text, pixels, checkbox fill
       },
       fontFamily: {
         pixel: ['"Press Start 2P"', 'monospace'],

@@ -3,9 +3,7 @@ interface Props {
   total: number
 }
 
-// Fills a bar with █ and ░ block characters
 function BlockBar({ filled, total }: { filled: number; total: number }) {
-  // Each habit gets 4 block segments → smoother feel
   const segments = total * 4
   const filledSegments = Math.round((filled / total) * segments)
 
@@ -14,15 +12,18 @@ function BlockBar({ filled, total }: { filled: number; total: number }) {
       style={{
         fontFamily: '"Press Start 2P"',
         fontSize: 8,
-        color: '#74b83e',
         letterSpacing: 1,
         lineHeight: 1,
       }}
-      className="lcd-glow"
     >
-      {Array.from({ length: segments }, (_, i) =>
-        i < filledSegments ? '█' : '░'
-      ).join('')}
+      {Array.from({ length: segments }, (_, i) => (
+        <span
+          key={i}
+          style={{ color: i < filledSegments ? '#306230' : '#9bbc0f' }}
+        >
+          █
+        </span>
+      ))}
     </span>
   )
 }
@@ -30,7 +31,7 @@ function BlockBar({ filled, total }: { filled: number; total: number }) {
 export default function StatusBars({ doneCount, total }: Props) {
   return (
     <div className="w-full flex flex-col gap-4">
-      {/* Happiness */}
+      {/* Mood */}
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2">
           <span style={{ fontSize: 12, lineHeight: 1 }}>💧</span>
@@ -38,7 +39,7 @@ export default function StatusBars({ doneCount, total }: Props) {
             style={{
               fontFamily: '"Press Start 2P"',
               fontSize: 6,
-              color: '#3d6b1f',
+              color: '#306230',
               letterSpacing: 1,
             }}
           >
@@ -56,7 +57,7 @@ export default function StatusBars({ doneCount, total }: Props) {
             style={{
               fontFamily: '"Press Start 2P"',
               fontSize: 6,
-              color: '#3d6b1f',
+              color: '#306230',
               letterSpacing: 1,
             }}
           >

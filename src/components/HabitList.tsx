@@ -8,7 +8,7 @@ interface Props {
 export default function HabitList({ habits, onToggle }: Props) {
   return (
     <div className="w-full flex flex-col gap-4">
-      <span className="text-lcd-green lcd-glow" style={{ fontSize: 8 }}>
+      <span className="text-gb-dark" style={{ fontSize: 8 }}>
         DAILY LOG
       </span>
 
@@ -16,7 +16,7 @@ export default function HabitList({ habits, onToggle }: Props) {
         {habits.map((habit) => (
           <label
             key={habit.id}
-            className="flex items-center gap-3 cursor-pointer group"
+            className="flex items-center gap-3 cursor-pointer"
           >
             <input
               type="checkbox"
@@ -28,8 +28,8 @@ export default function HabitList({ habits, onToggle }: Props) {
               style={{ fontSize: 7, lineHeight: '1.6' }}
               className={
                 habit.done
-                  ? 'text-lcd-dark line-through'
-                  : 'text-lcd-text lcd-glow'
+                  ? 'text-gb-mid line-through'
+                  : 'text-gb-dark'
               }
             >
               {habit.label}
