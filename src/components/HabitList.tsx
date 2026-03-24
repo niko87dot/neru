@@ -5,17 +5,24 @@ interface Props {
   onToggle: (id: string) => void
 }
 
-// Lives in the dark controls zone — uses lcd-green (#74b83e) palette.
 export default function HabitList({ habits, onToggle }: Props) {
   return (
-    <div className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-3">
       <span className="text-lcd-green" style={{ fontSize: 8 }}>
         DAILY LOG
       </span>
 
-      <div className="flex flex-col gap-3">
-        {habits.map((habit) => (
-          <label key={habit.id} className="flex items-center gap-3 cursor-pointer">
+      {/* Bordered habit list */}
+      <div style={{ border: '1px solid #333' }}>
+        {habits.map((habit, idx) => (
+          <label
+            key={habit.id}
+            className="flex items-center gap-3 cursor-pointer"
+            style={{
+              padding: '10px 12px',
+              borderTop: idx === 0 ? 'none' : '1px solid #1e1e1e',
+            }}
+          >
             <input
               type="checkbox"
               className="pixel-checkbox"
@@ -23,8 +30,12 @@ export default function HabitList({ habits, onToggle }: Props) {
               onChange={() => onToggle(habit.id)}
             />
             <span
-              style={{ fontSize: 7, lineHeight: '1.6' }}
-              className={habit.done ? 'text-lcd-green opacity-40 line-through' : 'text-lcd-green'}
+              style={{
+                fontSize: 7,
+                lineHeight: '1.6',
+                textDecoration: habit.done ? 'line-through' : 'none',
+              }}
+              className={habit.done ? 'text-lcd-green opacity-40' : 'text-lcd-green'}
             >
               {habit.label}
             </span>

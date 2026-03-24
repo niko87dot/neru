@@ -20,7 +20,7 @@ body {
   image-rendering: pixelated;
 }
 
-/* ── Checkbox: dark-zone variant (habit list) ────────────────────────── */
+/* ── Checkbox: dark-zone ─────────────────────────────────────────────── */
 .pixel-checkbox {
   appearance: none;
   -webkit-appearance: none;
@@ -50,8 +50,7 @@ body {
   transform: rotate(45deg);
 }
 
-/* ── Scanline overlay (screen zone) ─────────────────────────────────── */
-/* Applied via a sibling div so it doesn't interfere with clicks */
+/* ── Scanlines: subtle, every 3px, 0.08 opacity ─────────────────────── */
 .scanlines {
   position: relative;
 }
@@ -62,15 +61,15 @@ body {
   background: repeating-linear-gradient(
     0deg,
     transparent,
-    transparent 2px,
-    rgba(15, 56, 15, 0.12) 2px,
-    rgba(15, 56, 15, 0.12) 4px
+    transparent 3px,
+    rgba(15, 56, 15, 0.08) 3px,
+    rgba(15, 56, 15, 0.08) 4px
   );
   pointer-events: none;
   z-index: 1;
 }
 
-/* ── Card outer border ────────────────────────────────────────────────── */
+/* ── Card outer border ───────────────────────────────────────────────── */
 .card-border {
   border: 2px solid #306230;
 }
