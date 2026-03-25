@@ -6,11 +6,7 @@ const D   = '#3d6b1f'   // dark green   — secondary
 const S   = '#0f1a0f'   // screen bg
 const EYE = '#0a1a0a'   // eye / dark detail
 
-// Shell shading steps (hard-stop, no blur)
-const SH1 = '#4a8040'   // highlight top-left
-const SH2 = '#1a3320'   // midtone (base)
-const SH3 = '#0d1a0d'   // shadow bottom-right
-const SH4 = '#070f07'   // deepest edge
+const SH3 = '#0d1a0d'   // shadow — speaker dots + strap
 
 // ── Types ────────────────────────────────────────────────────────────────────
 type Expr = 'happy' | 'neutral' | 'sleeping'
@@ -24,9 +20,8 @@ function Neru({ expr }: { expr: Expr }) {
   const sleeping = expr === 'sleeping'
   const eyeY = 15
 
-  // Hard diagonal gradient — lit top-left, shadow bottom-right
-  const twoTone = `linear-gradient(135deg, ${G} 50%, ${D} 50%)`
-  const outline  = `0 0 0 1px #0a1a0a`
+  // Vertical split — top half lit, bottom half shadow
+  const twoTone = `linear-gradient(to bottom, ${G} 50%, ${D} 50%)`
 
   return (
     <div style={{ position: 'relative', display: 'inline-flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -42,12 +37,12 @@ function Neru({ expr }: { expr: Expr }) {
 
       {/* Antenna */}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ width: 8, height: 8, borderRadius: '50%', background: G, boxShadow: outline }} />
+        <div style={{ width: 8, height: 8, borderRadius: '50%', background: G }} />
         <div style={{ width: 3, height: 16, background: G }} />
       </div>
 
-      {/* Head — 60×50, two-tone + outline */}
-      <div style={{ position: 'relative', width: 60, height: 50, background: twoTone, boxShadow: outline, flexShrink: 0 }}>
+      {/* Head — 60×50, vertical two-tone */}
+      <div style={{ position: 'relative', width: 60, height: 50, background: twoTone, flexShrink: 0 }}>
 
         {/* Eyes */}
         {sleeping ? (
@@ -57,11 +52,10 @@ function Neru({ expr }: { expr: Expr }) {
             <div style={{ position: 'absolute', left: 35, top: eyeY + 4, width: 10, height: 3, background: EYE }} />
           </>
         ) : (
-          // Open: 10×10 blocks + 2×2 highlight dot (top-right of each eye)
+          // Open: 10×10 dark blocks + 2×2 shine dot top-right
           <>
-            <div style={{ position: 'absolute', left: 15, top: eyeY, width: 10, height: 10, background: EYE, boxShadow: outline }} />
-            <div style={{ position: 'absolute', left: 35, top: eyeY, width: 10, height: 10, background: EYE, boxShadow: outline }} />
-            {/* Eye shine */}
+            <div style={{ position: 'absolute', left: 15, top: eyeY, width: 10, height: 10, background: EYE }} />
+            <div style={{ position: 'absolute', left: 35, top: eyeY, width: 10, height: 10, background: EYE }} />
             <div style={{ position: 'absolute', left: 22, top: eyeY + 1, width: 2, height: 2, background: '#c8e6a0' }} />
             <div style={{ position: 'absolute', left: 42, top: eyeY + 1, width: 2, height: 2, background: '#c8e6a0' }} />
           </>
@@ -96,9 +90,9 @@ function Neru({ expr }: { expr: Expr }) {
 
       {/* Body 33×26 — two-tone; arms: left=lit, right=shadow */}
       <div style={{ position: 'relative', marginTop: 5, flexShrink: 0 }}>
-        <div style={{ position: 'absolute', left: -7, top: 5,  width: 7, height: 13, background: G,  boxShadow: outline }} />
-        <div style={{ position: 'absolute', right: -7, top: 5, width: 7, height: 13, background: D,  boxShadow: outline }} />
-        <div style={{ width: 33, height: 26, background: twoTone, boxShadow: outline }} />
+        <div style={{ position: 'absolute', left: -7, top: 5,  width: 7, height: 13, background: G }} />
+        <div style={{ position: 'absolute', right: -7, top: 5, width: 7, height: 13, background: D }} />
+        <div style={{ width: 33, height: 26, background: twoTone }} />
       </div>
 
       {/* Nametag */}
@@ -144,8 +138,8 @@ function Btn({ label, sub, onPress }: { label: string; sub: string; onPress: () 
           width: 52, height: 52,
           borderRadius: '50%',
           background: down
-            ? 'linear-gradient(145deg, #081508 0%, #0a1a0a 50%, #060e06 100%)'
-            : 'linear-gradient(145deg, #2a4a25 0%, #2a4a25 28%, #0d1f10 28%, #0d1f10 72%, #060e06 72%)',
+            ? 'radial-gradient(ellipse at 40% 35%, #162812 0%, #080f08 60%, #040a04 100%)'
+            : 'radial-gradient(ellipse at 40% 35%, #2d5535 0%, #0d1f10 60%, #050f05 100%)',
           border: '2px solid #0a1208',
           boxShadow: down
             ? '0 1px 0 #040a04, inset 0 2px 0 #060e06'
@@ -165,16 +159,6 @@ function Btn({ label, sub, onPress }: { label: string; sub: string; onPress: () 
           WebkitTapHighlightColor: 'transparent',
         } as React.CSSProperties}
       >
-        {/* Plastic highlight spot top-left */}
-        {!down && (
-          <div style={{
-            position: 'absolute', top: 9, left: 10,
-            width: 9, height: 5,
-            borderRadius: '50%',
-            background: '#2d5535',
-            pointerEvents: 'none',
-          }} />
-        )}
         {label}
       </button>
       <span style={{ color: D, fontSize: 7, fontFamily: "'Press Start 2P', monospace" }}>{sub}</span>
@@ -283,14 +267,13 @@ export default function App() {
           width: 460,
           height: 740,
           borderRadius: '48% 48% 44% 44% / 38% 38% 52% 52%',
-          // 4-step hard gradient — no blur/transition between bands
-          background: `linear-gradient(135deg,
-            ${SH1} 0%, ${SH1} 20%,
-            ${SH2} 20%, ${SH2} 65%,
-            ${SH3} 65%, ${SH3} 86%,
-            ${SH4} 86%)`,
+          background: 'radial-gradient(ellipse at 35% 30%, #2d5535 0%, #1a3320 45%, #0d1a0d 100%)',
           border: '3px solid #0a1208',
-          boxShadow: '0 12px 40px rgba(0,0,0,0.9), 0 4px 12px rgba(0,0,0,0.6)',
+          boxShadow: [
+            '0 16px 48px rgba(0,0,0,0.85)',
+            'inset 3px 0 8px rgba(80,140,80,0.15)',
+            'inset 0 3px 12px rgba(80,140,80,0.1)',
+          ].join(', '),
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -299,15 +282,6 @@ export default function App() {
           marginTop: -2,
           position: 'relative',
         }}>
-
-          {/* Plastic light-reflection — oval highlight spot, no blur */}
-          <div style={{
-            position: 'absolute', top: 62, left: 52,
-            width: 60, height: 38,
-            borderRadius: '50%',
-            background: '#5a9a4a',
-            pointerEvents: 'none',
-          }} />
 
           {/* Brand engraving */}
           <div style={{ fontSize: 7, color: '#2d5535', letterSpacing: 5, marginBottom: 8, opacity: 0.9, position: 'relative' }}>
