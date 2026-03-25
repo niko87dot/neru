@@ -134,26 +134,26 @@ function Btn({ label, sub, onPress }: { label: string; sub: string; onPress: () 
   const [down, setDown] = useState(false)
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
       <button
         onPointerDown={(e) => { e.preventDefault(); setDown(true) }}
         onPointerUp={(e)   => { e.preventDefault(); setDown(false); onPress() }}
         onPointerLeave={()  => setDown(false)}
         style={{
-          width: 38,
-          height: 38,
+          width: 52,
+          height: 52,
           borderRadius: '50%',
           background: '#0d1f10',
           border: '2px solid #2d5535',
           boxShadow: down
-            ? '0 1px 0 #051008, inset 0 1px 2px rgba(0,0,0,0.4)'
-            : '0 4px 0 #051008, 0 5px 10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(45,85,53,0.4)',
-          transform: down ? 'translateY(3px)' : 'translateY(0)',
+            ? '0 1px 0 #051008, inset 0 2px 4px rgba(0,0,0,0.5)'
+            : '0 5px 0 #051008, 0 6px 12px rgba(0,0,0,0.5), inset 0 1px 0 rgba(45,85,53,0.4)',
+          transform: down ? 'translateY(4px)' : 'translateY(0)',
           transition: 'transform 50ms, box-shadow 50ms',
           cursor: 'pointer',
           color: G,
           fontFamily: "'Press Start 2P', monospace",
-          fontSize: 10,
+          fontSize: 12,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -164,7 +164,7 @@ function Btn({ label, sub, onPress }: { label: string; sub: string; onPress: () 
       >
         {label}
       </button>
-      <span style={{ color: D, fontSize: 6, fontFamily: "'Press Start 2P', monospace" }}>{sub}</span>
+      <span style={{ color: D, fontSize: 7, fontFamily: "'Press Start 2P', monospace" }}>{sub}</span>
     </div>
   )
 }
@@ -258,8 +258,8 @@ export default function App() {
 
         {/* Strap loop */}
         <div style={{
-          width: 30,
-          height: 18,
+          width: 34,
+          height: 20,
           borderRadius: '50% 50% 0 0 / 100% 100% 0 0',
           background: '#0a1a0e',
           border: '1px solid #2d5535',
@@ -268,32 +268,32 @@ export default function App() {
           zIndex: 2,
         }} />
 
-        {/* ── EGG CASE 400×650 ───────────────────────────────────────────── */}
+        {/* ── EGG CASE 460×740 ───────────────────────────────────────────── */}
         <div style={{
-          width: 400,
-          height: 650,
+          width: 460,
+          height: 740,
           borderRadius: '48% 48% 44% 44% / 38% 38% 52% 52%',
           background: K,
           border: '3px solid #0d1f10',
           boxShadow: [
-            '0 12px 48px rgba(0,0,0,0.85)',
+            '0 14px 56px rgba(0,0,0,0.85)',
             'inset 0 1px 0 rgba(255,255,255,0.04)',
             'inset 2px 0 0 rgba(45,85,53,0.25)',
           ].join(', '),
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          paddingTop: 42,
-          paddingBottom: 38,
+          paddingTop: 68,
+          paddingBottom: 62,
           marginTop: -2,
           position: 'relative',
         }}>
 
           {/* Brand engraving */}
-          <div style={{ fontSize: 7, color: '#2d5535', letterSpacing: 5, marginBottom: 6, opacity: 0.9 }}>
+          <div style={{ fontSize: 7, color: '#2d5535', letterSpacing: 5, marginBottom: 8, opacity: 0.9 }}>
             NERU
           </div>
-          <div style={{ width: 50, height: 1, background: '#2d5535', opacity: 0.4, marginBottom: 18 }} />
+          <div style={{ width: 50, height: 1, background: '#2d5535', opacity: 0.4, marginBottom: 22 }} />
 
           {/* ── SCREEN 330×370 ─────────────────────────────────────────── */}
           {/* Outer bezel */}
@@ -370,14 +370,14 @@ export default function App() {
           </div>
 
           {/* Speaker dots */}
-          <div style={{ display: 'flex', gap: 8, marginTop: 18, marginBottom: 10 }}>
+          <div style={{ display: 'flex', gap: 8, marginTop: 24, marginBottom: 14 }}>
             {[0,1,2,3].map(i => (
               <div key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: '#193520', border: '1px solid #2d5535' }} />
             ))}
           </div>
 
           {/* ── BUTTONS ────────────────────────────────────────────────── */}
-          <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start', marginTop: 10 }}>
+          <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start', marginTop: 14 }}>
             <Btn label="▲" sub="UP" onPress={up} />
             <Btn label="●" sub="OK" onPress={ok} />
             <Btn label="▼" sub="DN" onPress={dn} />
