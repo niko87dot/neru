@@ -5,21 +5,25 @@ const G   = '#74b83e'   // bright green — primary
 const D   = '#3d6b1f'   // dark green   — secondary / labels
 const S   = '#0f1a0f'   // screen bg
 const K   = '#1a3320'   // case bg
-const EYE = '#0f1a0f'   // character eye / detail color
+const EYE = '#0a1a0a'   // character eye / detail color
 
 // ── Types ────────────────────────────────────────────────────────────────────
 type Expr = 'happy' | 'neutral' | 'sleeping'
 
 // ── Neru character ───────────────────────────────────────────────────────────
-// Head: 48×48px square
-// Eyes: two 8×8px squares (#0f1a0f), 8px apart, centered
-// Mouth: 3 pixel-blocks arranged by expression
-// Antenna: 4px stem 16px tall + 6px ball
-// Body: 32×24px, 4px below head
-// Arms: 8×8px each side, offset 4px from top of body
-// Total height ≈ 110px
+// Head: 36×32px (wider than tall — lighter feel)
+// Eyes: 6×6px, 6px apart, centered in head
+// Mouth: 3×3px blocks per expression
+// Antenna: 2px wide × 14px tall + 4px ball
+// Body: 20×16px, 4px below head
+// Arms: 4×8px each side, slightly offset
+// Total height ≈ 88px
 function Neru({ expr }: { expr: Expr }) {
   const sleeping = expr === 'sleeping'
+
+  // Eye x positions: (36 - (6+6+6)) / 2 = 9 → left=9, right=21
+  // Eye y: 10px from top
+  const eyeY = 10
 
   return (
     <div style={{ position: 'relative', display: 'inline-flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -27,79 +31,79 @@ function Neru({ expr }: { expr: Expr }) {
       {/* Floating z z Z */}
       {sleeping && (
         <div style={{
-          position: 'absolute', top: 4, right: -30,
+          position: 'absolute', top: 2, right: -26,
           display: 'flex', flexDirection: 'column', alignItems: 'flex-end',
         }}>
-          <span className="zzz-c" style={{ fontSize: 9,  color: D, fontFamily: "'Press Start 2P', monospace", display: 'block' }}>Z</span>
-          <span className="zzz-b" style={{ fontSize: 7,  color: D, fontFamily: "'Press Start 2P', monospace", display: 'block', marginRight: 2 }}>z</span>
-          <span className="zzz-a" style={{ fontSize: 5,  color: D, fontFamily: "'Press Start 2P', monospace", display: 'block', marginRight: 5 }}>z</span>
+          <span className="zzz-c" style={{ fontSize: 8,  color: D, fontFamily: "'Press Start 2P', monospace", display: 'block' }}>Z</span>
+          <span className="zzz-b" style={{ fontSize: 6,  color: D, fontFamily: "'Press Start 2P', monospace", display: 'block', marginRight: 2 }}>z</span>
+          <span className="zzz-a" style={{ fontSize: 5,  color: D, fontFamily: "'Press Start 2P', monospace", display: 'block', marginRight: 4 }}>z</span>
         </div>
       )}
 
-      {/* Antenna */}
+      {/* Antenna — 2px stem */}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ width: 6,  height: 6,  borderRadius: '50%', background: G }} />
-        <div style={{ width: 4,  height: 16, background: G }} />
+        <div style={{ width: 4,  height: 4,  borderRadius: '50%', background: G }} />
+        <div style={{ width: 2,  height: 14, background: G }} />
       </div>
 
-      {/* Head — 48×48 */}
-      <div style={{ position: 'relative', width: 48, height: 48, background: G, flexShrink: 0 }}>
+      {/* Head — 36×32 */}
+      <div style={{ position: 'relative', width: 36, height: 32, background: G, flexShrink: 0 }}>
 
-        {/* Eyes — open: 8×8 squares; sleeping: thin 8×3 lines */}
+        {/* Eyes — open: 6×6; sleeping: 6×2 thin lines */}
         {sleeping ? (
           <>
-            <div style={{ position: 'absolute', left: 12, top: 18, width: 8, height: 3, background: EYE }} />
-            <div style={{ position: 'absolute', left: 28, top: 18, width: 8, height: 3, background: EYE }} />
+            <div style={{ position: 'absolute', left: 9,  top: eyeY + 2, width: 6, height: 2, background: EYE }} />
+            <div style={{ position: 'absolute', left: 21, top: eyeY + 2, width: 6, height: 2, background: EYE }} />
           </>
         ) : (
           <>
-            <div style={{ position: 'absolute', left: 12, top: 14, width: 8, height: 8, background: EYE }} />
-            <div style={{ position: 'absolute', left: 28, top: 14, width: 8, height: 8, background: EYE }} />
+            <div style={{ position: 'absolute', left: 9,  top: eyeY, width: 6, height: 6, background: EYE }} />
+            <div style={{ position: 'absolute', left: 21, top: eyeY, width: 6, height: 6, background: EYE }} />
           </>
         )}
 
-        {/* Mouth */}
+        {/* Mouth — 3×3px blocks */}
         {expr === 'happy' && (
-          // U-shape smile: corners level, center drops
+          // U-shape: corners higher, center drops 3px
           <>
-            <div style={{ position: 'absolute', left: 10, top: 34, width: 4, height: 4, background: EYE }} />
-            <div style={{ position: 'absolute', left: 22, top: 38, width: 4, height: 4, background: EYE }} />
-            <div style={{ position: 'absolute', left: 34, top: 34, width: 4, height: 4, background: EYE }} />
+            <div style={{ position: 'absolute', left: 8,  top: 24, width: 3, height: 3, background: EYE }} />
+            <div style={{ position: 'absolute', left: 17, top: 27, width: 3, height: 3, background: EYE }} />
+            <div style={{ position: 'absolute', left: 25, top: 24, width: 3, height: 3, background: EYE }} />
           </>
         )}
         {expr === 'neutral' && (
-          // Flat horizontal line
+          // Flat line
           <>
-            <div style={{ position: 'absolute', left: 12, top: 36, width: 4, height: 4, background: EYE }} />
-            <div style={{ position: 'absolute', left: 22, top: 36, width: 4, height: 4, background: EYE }} />
-            <div style={{ position: 'absolute', left: 32, top: 36, width: 4, height: 4, background: EYE }} />
+            <div style={{ position: 'absolute', left: 8,  top: 25, width: 3, height: 3, background: EYE }} />
+            <div style={{ position: 'absolute', left: 17, top: 25, width: 3, height: 3, background: EYE }} />
+            <div style={{ position: 'absolute', left: 25, top: 25, width: 3, height: 3, background: EYE }} />
           </>
         )}
         {expr === 'sleeping' && (
-          // ∩-shape frown: corners drop, center rises
+          // ∩-frown: center rises, corners drop
           <>
-            <div style={{ position: 'absolute', left: 10, top: 38, width: 4, height: 4, background: EYE }} />
-            <div style={{ position: 'absolute', left: 22, top: 34, width: 4, height: 4, background: EYE }} />
-            <div style={{ position: 'absolute', left: 34, top: 38, width: 4, height: 4, background: EYE }} />
+            <div style={{ position: 'absolute', left: 8,  top: 27, width: 3, height: 3, background: EYE }} />
+            <div style={{ position: 'absolute', left: 17, top: 24, width: 3, height: 3, background: EYE }} />
+            <div style={{ position: 'absolute', left: 25, top: 27, width: 3, height: 3, background: EYE }} />
           </>
         )}
       </div>
 
-      {/* Body 32×24 + arms 8×8 */}
+      {/* Body 20×16 + slim arms 4×8 */}
       <div style={{ position: 'relative', marginTop: 4, flexShrink: 0 }}>
-        <div style={{ position: 'absolute', left: -8, top: 4,  width: 8, height: 8, background: G }} />
-        <div style={{ position: 'absolute', right: -8, top: 4, width: 8, height: 8, background: G }} />
-        <div style={{ width: 32, height: 24, background: G }} />
+        <div style={{ position: 'absolute', left: -4, top: 3,  width: 4, height: 8, background: G }} />
+        <div style={{ position: 'absolute', right: -4, top: 3, width: 4, height: 8, background: G }} />
+        <div style={{ width: 20, height: 16, background: G }} />
       </div>
 
       {/* Nametag */}
       <div style={{
-        marginTop: 7,
-        fontSize: 6,
+        marginTop: 6,
+        fontSize: 5,
         color: D,
         fontFamily: "'Press Start 2P', monospace",
         border: `1px solid ${D}`,
-        padding: '2px 5px',
+        padding: '2px 4px',
         letterSpacing: 1,
       }}>
         NERU
@@ -254,8 +258,8 @@ export default function App() {
 
         {/* Strap loop */}
         <div style={{
-          width: 26,
-          height: 16,
+          width: 30,
+          height: 18,
           borderRadius: '50% 50% 0 0 / 100% 100% 0 0',
           background: '#0a1a0e',
           border: '1px solid #2d5535',
@@ -264,23 +268,23 @@ export default function App() {
           zIndex: 2,
         }} />
 
-        {/* ── EGG CASE 340×580 ───────────────────────────────────────────── */}
+        {/* ── EGG CASE 400×650 ───────────────────────────────────────────── */}
         <div style={{
-          width: 340,
-          height: 580,
-          borderRadius: '50% 50% 45% 45% / 40% 40% 50% 50%',
+          width: 400,
+          height: 650,
+          borderRadius: '48% 48% 44% 44% / 38% 38% 52% 52%',
           background: K,
           border: '3px solid #0d1f10',
           boxShadow: [
-            '0 10px 40px rgba(0,0,0,0.85)',
+            '0 12px 48px rgba(0,0,0,0.85)',
             'inset 0 1px 0 rgba(255,255,255,0.04)',
             'inset 2px 0 0 rgba(45,85,53,0.25)',
           ].join(', '),
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          paddingTop: 36,
-          paddingBottom: 32,
+          paddingTop: 42,
+          paddingBottom: 38,
           marginTop: -2,
           position: 'relative',
         }}>
@@ -289,13 +293,13 @@ export default function App() {
           <div style={{ fontSize: 7, color: '#2d5535', letterSpacing: 5, marginBottom: 6, opacity: 0.9 }}>
             NERU
           </div>
-          <div style={{ width: 44, height: 1, background: '#2d5535', opacity: 0.4, marginBottom: 16 }} />
+          <div style={{ width: 50, height: 1, background: '#2d5535', opacity: 0.4, marginBottom: 18 }} />
 
-          {/* ── SCREEN 280×320 ─────────────────────────────────────────── */}
+          {/* ── SCREEN 330×370 ─────────────────────────────────────────── */}
           {/* Outer bezel */}
           <div style={{
-            width: 280,
-            borderRadius: 12,
+            width: 330,
+            borderRadius: 14,
             background: '#0c180c',
             padding: 3,
             boxShadow: 'inset 0 2px 5px rgba(0,0,0,0.6)',
@@ -303,7 +307,7 @@ export default function App() {
             {/* Inner LCD panel */}
             <div style={{
               width: '100%',
-              height: 320,
+              height: 370,
               borderRadius: 9,
               background: S,
               border: '1px solid #192a19',
@@ -323,7 +327,7 @@ export default function App() {
               <div style={{ height: 1, background: D, opacity: 0.35, marginBottom: 8 }} />
 
               {/* Character zone */}
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 130, flexShrink: 0 }}>
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 120, flexShrink: 0 }}>
                 <Neru expr={expr} />
               </div>
 
@@ -366,14 +370,14 @@ export default function App() {
           </div>
 
           {/* Speaker dots */}
-          <div style={{ display: 'flex', gap: 7, marginTop: 16, marginBottom: 8 }}>
+          <div style={{ display: 'flex', gap: 8, marginTop: 18, marginBottom: 10 }}>
             {[0,1,2,3].map(i => (
-              <div key={i} style={{ width: 5, height: 5, borderRadius: '50%', background: '#193520', border: '1px solid #2d5535' }} />
+              <div key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: '#193520', border: '1px solid #2d5535' }} />
             ))}
           </div>
 
           {/* ── BUTTONS ────────────────────────────────────────────────── */}
-          <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start', marginTop: 8 }}>
+          <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start', marginTop: 10 }}>
             <Btn label="▲" sub="UP" onPress={up} />
             <Btn label="●" sub="OK" onPress={ok} />
             <Btn label="▼" sub="DN" onPress={dn} />
