@@ -2,23 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; }
 
 html, body, #root {
   height: 100%;
-  background-color: #0a0a0a;
+  margin: 0;
+  padding: 0;
 }
 
 body {
+  background: #0a0a0a;
   font-family: 'Press Start 2P', monospace;
   -webkit-font-smoothing: none;
   image-rendering: pixelated;
 }
 
-@keyframes blink {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
 }
 .cursor-blink {
-  animation: blink 1s step-end infinite;
+  animation: cursor-blink 1s step-end infinite;
 }
+
+@keyframes zzz-rise {
+  0%   { transform: translateY(0px);   opacity: 0.85; }
+  70%  { opacity: 0.5; }
+  100% { transform: translateY(-20px); opacity: 0; }
+}
+.zzz-a { animation: zzz-rise 2.4s ease-in infinite 0.0s; }
+.zzz-b { animation: zzz-rise 2.4s ease-in infinite 0.8s; }
+.zzz-c { animation: zzz-rise 2.4s ease-in infinite 1.6s; }
+
+button { outline: none; }
+button:focus-visible { outline: none; }
