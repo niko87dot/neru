@@ -17,7 +17,7 @@ export default function WakeUp({ onDone }: { onDone: () => void }) {
       const t = setTimeout(() => {
         setCursorVisible(true)
         setPhase('typing')
-      }, 800)
+      }, 500)
       return () => clearTimeout(t)
     }
 
@@ -28,12 +28,12 @@ export default function WakeUp({ onDone }: { onDone: () => void }) {
         setDisplayText(FULL_TEXT.slice(0, idx))
         if (idx >= FULL_TEXT.length) {
           clearInterval(interval)
-          // Blink cursor 3x then go to pause
+          // Blink cursor 2x then go to pause
           cursorBlinks.current = 0
           const blinkInterval = setInterval(() => {
             cursorBlinks.current++
             setCursorVisible(v => !v)
-            if (cursorBlinks.current >= 6) {
+            if (cursorBlinks.current >= 4) {
               clearInterval(blinkInterval)
               setCursorVisible(false)
               setPhase('pause')
@@ -45,7 +45,7 @@ export default function WakeUp({ onDone }: { onDone: () => void }) {
     }
 
     if (phase === 'pause') {
-      const t = setTimeout(() => setPhase('fadeout'), 1500)
+      const t = setTimeout(() => setPhase('fadeout'), 800)
       return () => clearTimeout(t)
     }
 
@@ -54,7 +54,7 @@ export default function WakeUp({ onDone }: { onDone: () => void }) {
       const t = setTimeout(() => {
         localStorage.setItem('neru_intro_seen', 'true')
         onDone()
-      }, 600)
+      }, 400)
       return () => clearTimeout(t)
     }
   }, [phase, onDone])
@@ -73,13 +73,13 @@ export default function WakeUp({ onDone }: { onDone: () => void }) {
         justifyContent: 'center',
         zIndex: 9999,
         opacity,
-        transition: phase === 'fadeout' ? 'opacity 600ms ease' : 'none',
+        transition: phase === 'fadeout' ? 'opacity 400ms ease' : 'none',
       }}
     >
       <div
         style={{
-          fontFamily: "'Courier New', Courier, monospace",
-          fontSize: 'clamp(16px, 2.5vw, 18px)',
+          fontFamily: "'Press Start 2P', cursive",
+          fontSize: '14px',
           color: '#74b83e',
           letterSpacing: '0.15em',
           fontWeight: 'normal',
