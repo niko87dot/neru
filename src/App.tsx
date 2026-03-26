@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import PixelCanvas from './PixelCanvas'
+import WakeUp from './WakeUp'
 
 // ── Palette ───────────────────────────────────────────────────────────────────
 const G   = '#74b83e'
@@ -358,6 +359,10 @@ function persist(habits: Habit[]) {
 
 // ── App ───────────────────────────────────────────────────────────────────────
 export default function App() {
+  const [showIntro, setShowIntro] = useState(
+    () => !localStorage.getItem('neru_intro_seen')
+  )
+
   const [habits, setHabits] = useState<Habit[]>(() =>
     loadHabits() ?? HABITS_INIT.map(h => ({ ...h }))
   )
@@ -396,6 +401,8 @@ export default function App() {
   const hp    = Math.round((done / total) * 10)
   const en    = Math.round((done / total) * 8)
   const expr: Expr = done === total ? 'happy' : done === 0 ? 'sleeping' : 'neutral'
+
+  if (showIntro) return <WakeUp onDone={() => setShowIntro(false)} />
 
   return (
     <div style={{
