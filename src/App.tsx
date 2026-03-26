@@ -388,6 +388,21 @@ export default function App() {
             <Btn label="▼" sub="DN" onPress={dn} />
           </div>
 
+          {/* Footer */}
+          <div style={{ marginTop: 12, display: 'flex', gap: 8, alignItems: 'center', fontSize: 6, fontFamily: "'Press Start 2P', monospace" }}>
+            <a href="https://x.com/getneruapp" target="_blank" rel="noopener noreferrer"
+              style={{ color: '#3d6b1f', textDecoration: 'none' }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#74b83e')}
+              onMouseLeave={e => (e.currentTarget.style.color = '#3d6b1f')}
+            >X</a>
+            <span style={{ color: '#3d6b1f' }}>·</span>
+            <a href="https://github.com/niko87dot/neru" target="_blank" rel="noopener noreferrer"
+              style={{ color: '#3d6b1f', textDecoration: 'none' }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#74b83e')}
+              onMouseLeave={e => (e.currentTarget.style.color = '#3d6b1f')}
+            >GITHUB</a>
+          </div>
+
         </div>
       </div>
     </div>
