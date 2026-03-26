@@ -11,13 +11,12 @@ export default function WakeUp({ onDone }: { onDone: () => void }) {
   const [cursorVisible, setCursorVisible] = useState(false)
   const cursorBlinks = useRef(0)
 
-  // Phase transitions
   useEffect(() => {
     if (phase === 'silence') {
       const t = setTimeout(() => {
         setCursorVisible(true)
         setPhase('typing')
-      }, 500)
+      }, 300)
       return () => clearTimeout(t)
     }
 
@@ -28,7 +27,6 @@ export default function WakeUp({ onDone }: { onDone: () => void }) {
         setDisplayText(FULL_TEXT.slice(0, idx))
         if (idx >= FULL_TEXT.length) {
           clearInterval(interval)
-          // Blink cursor 2x then go to pause
           cursorBlinks.current = 0
           const blinkInterval = setInterval(() => {
             cursorBlinks.current++
@@ -45,25 +43,22 @@ export default function WakeUp({ onDone }: { onDone: () => void }) {
     }
 
     if (phase === 'pause') {
-      const t = setTimeout(() => setPhase('fadeout'), 800)
+      const t = setTimeout(() => setPhase('fadeout'), 600)
       return () => clearTimeout(t)
     }
 
     if (phase === 'fadeout') {
       setFadeOut(true)
+      const t = setTimeout(() => {
+        localStorage.setItem('neru_intro_seen', 'true')
+        onDone()
+      }, 500)
+      return () => clearTimeout(t)
     }
-  }, [phase])
-
-  function handleTransitionEnd() {
-    if (fadeOut) {
-      localStorage.setItem('neru_intro_seen', 'true')
-      onDone()
-    }
-  }
+  }, [phase, onDone])
 
   return (
     <div
-      onTransitionEnd={handleTransitionEnd}
       style={{
         position: 'fixed',
         top: 0,
@@ -76,7 +71,7 @@ export default function WakeUp({ onDone }: { onDone: () => void }) {
         justifyContent: 'center',
         zIndex: 9999,
         opacity: fadeOut ? 0 : 1,
-        transition: 'opacity 600ms ease-in-out',
+        transition: 'opacity 500ms ease-in-out',
       }}
     >
       <div
