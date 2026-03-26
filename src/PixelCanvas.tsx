@@ -1,13 +1,14 @@
 import { useRef, useEffect } from 'react'
 
-// ── Canvas size ───────────────────────────────────────────────────────────────
-const CW = 80   // internal canvas width  (each pixel = 5 display px)
-const CH = 130  // internal canvas height
+// ── Canvas dimensions ─────────────────────────────────────────────────────────
+// 92×148 internal → 460×740 CSS (5× integer scale, same as SVG device)
+const CW = 92
+const CH = 148
 
 // ── Palette ───────────────────────────────────────────────────────────────────
 const C = {
   bg:    '#0a0a0a',
-  e1:    '#0d1a0d',  // zone 1 — darkest (shadow)
+  e1:    '#0d1a0d',  // zone 1 — shadow (darkest)
   e2:    '#1a3320',  // zone 2 — base midtone
   e3:    '#2d5535',  // zone 3 — highlight upper-left
   e4:    '#3d6b2f',  // zone 4 — brightest point
@@ -20,32 +21,15 @@ const C = {
   btnHi: '#2d5535',
 }
 
-// ── Egg: two half-ellipses joined at ECY ──────────────────────────────────────
-// Upper (dy≤0): rx=30 ry=60 → narrow/pointed top
-// Lower (dy>0): rx=35 ry=56 → wide/rounded bottom
-const ECX = 40, ECY = 66
+// ── Egg: two half-ellipses joined at ECY=74 (midpoint of 148px) ───────────────
+// Matches SVG egg proportions: top y≈1, bottom y≈147, widest at y=74 (radius ≈45)
+// RX_TOP slightly narrower than RX_BOT for classic egg silhouette
+const ECX = 46, ECY = 74
 
 function inEgg(x: number, y: number): boolean {
   const dx = x - ECX, dy = y - ECY
-  if (dy <= 0) return (dx * dx) / (30 * 30) + (dy * dy) / (60 * 60) <= 1
-  return (dx * dx) / (35 * 35) + (dy * dy) / (56 * 56) <= 1
-}
-
-// Zone boundaries — diagonal lines scaled from 460×740 SVG shading zones
-function eggColor(x: number, y: number): string {
-  // Shadow zone: below line (0,96)→(80,68)
-  const shadow = y >= 96 - 0.35 * x
-  // Deep shadow: x≥24 and below line (24,130)→(80,89)
-  const deepShadow = x >= 24 && y >= 130 - (41 / 56) * (x - 24)
-  // Highlight: x≤54 and above line (54,0)→(0,70)
-  const highlight = x <= 54 && y <= 70 * (1 - x / 54)
-  // Bright highlight: x≤23 and above line (23,0)→(0,40)
-  const bright = x <= 23 && y <= 40 * (1 - x / 23)
-
-  if (deepShadow || shadow) return C.e1
-  if (bright)               return C.e4
-  if (highlight)            return C.e3
-  return C.e2
+  if (dy <= 0) return (dx * dx) / (42 * 42) + (dy * dy) / (73 * 73) <= 1
+  return (dx * dx) / (44 * 44) + (dy * dy) / (73 * 73) <= 1
 }
 
 function isEggEdge(x: number, y: number): boolean {
@@ -54,8 +38,53 @@ function isEggEdge(x: number, y: number): boolean {
          !inEgg(x, y - 1) || !inEgg(x, y + 1)
 }
 
-// ── Neru 8×8 head sprite — drawn at 3px per cell = 24×24 on canvas ───────────
-// 0 = transparent, 1 = green, 2 = dark (eyes / mouth)
+// ── Shading zones — SVG polygon boundaries ÷5 (460×740 → 92×148) ─────────────
+//
+//  Deep shadow:  SVG "140,740 460,510 460,740"  →  (28,148)(92,102)(92,148)
+//  Shadow:       SVG "0,545 460,390 460,740 0,740"→ (0,109)(92,78)(92,148)(0,148)
+//  Highlight:    SVG "0,0 310,0 190,355 0,400"  →  (0,0)(62,0)(38,71)(0,80)
+//  Bright:       SVG "0,0 130,0 55,205 0,225"   →  (0,0)(26,0)(11,41)(0,45)
+
+function inDeepShadow(x: number, y: number): boolean {
+  if (x < 28) return false
+  // line (28,148)→(92,102): y = 148 - (46/64)*(x-28)
+  return y >= 148 - (46 / 64) * (x - 28)
+}
+
+function inShadow(x: number, y: number): boolean {
+  // line (0,109)→(92,78): y = 109 - (31/92)*x
+  return y >= 109 - (31 / 92) * x
+}
+
+function inHighlight(x: number, y: number): boolean {
+  if (x < 0 || y < 0) return false
+  if (x >= 38) {
+    // segment (62,0)→(38,71): y = 71*(62-x)/24
+    return y <= 71 * (62 - x) / 24
+  }
+  // segment (38,71)→(0,80): y = 80 - (9/38)*x
+  return y <= 80 - (9 / 38) * x
+}
+
+function inBright(x: number, y: number): boolean {
+  if (x < 0 || y < 0) return false
+  if (x >= 11) {
+    // segment (26,0)→(11,41): y = 41*(26-x)/15
+    return y <= 41 * (26 - x) / 15
+  }
+  // segment (11,41)→(0,45): y = 45 - (4/11)*x
+  return y <= 45 - (4 / 11) * x
+}
+
+function eggColor(x: number, y: number): string {
+  if (inDeepShadow(x, y) || inShadow(x, y)) return C.e1
+  if (inBright(x, y))     return C.e4
+  if (inHighlight(x, y))  return C.e3
+  return C.e2
+}
+
+// ── Neru 8×8 head sprite — 3px per cell = 24×24 on canvas ────────────────────
+// 0 = transparent, 1 = green, 2 = dark
 const HEAD = [
   [0, 1, 1, 1, 1, 1, 1, 0],
   [1, 1, 1, 1, 1, 1, 1, 1],
@@ -67,8 +96,8 @@ const HEAD = [
   [0, 1, 1, 1, 1, 1, 1, 0],
 ]
 const HEAD_SCALE = 3
-const HEAD_X = 28   // top-left x in canvas pixels
-const HEAD_Y = 27   // top-left y in canvas pixels
+const HEAD_X = 28
+const HEAD_Y = 27
 
 // ── 7×7 pixel-circle pattern ─────────────────────────────────────────────────
 const CIRCLE = [
@@ -81,15 +110,15 @@ const CIRCLE = [
   [0, 0, 1, 1, 1, 0, 0],
 ]
 const BTN_CENTERS_X = [20, 40, 60]
-const BTN_Y = 88  // button circle center y
+const BTN_Y = 88
 
-// ── Draw everything ───────────────────────────────────────────────────────────
+// ── Draw ──────────────────────────────────────────────────────────────────────
 function draw(ctx: CanvasRenderingContext2D) {
   // 1. Background
   ctx.fillStyle = C.bg
   ctx.fillRect(0, 0, CW, CH)
 
-  // 2. Egg — pixel by pixel with zone color
+  // 2. Egg fill — pixel by pixel
   for (let y = 0; y < CH; y++) {
     for (let x = 0; x < CW; x++) {
       if (!inEgg(x, y)) continue
@@ -98,7 +127,7 @@ function draw(ctx: CanvasRenderingContext2D) {
     }
   }
 
-  // 3. Egg outline (drawn after fill so it sits on top)
+  // 3. Egg outline
   for (let y = 0; y < CH; y++) {
     for (let x = 0; x < CW; x++) {
       if (isEggEdge(x, y)) {
@@ -108,13 +137,13 @@ function draw(ctx: CanvasRenderingContext2D) {
     }
   }
 
-  // 4. Screen — border rect then inner fill
+  // 4. Screen (border + fill)
   ctx.fillStyle = C.scrBr
-  ctx.fillRect(20, 24, 39, 48)   // 1-px border ring
+  ctx.fillRect(20, 24, 39, 48)
   ctx.fillStyle = C.scrBg
-  ctx.fillRect(21, 25, 37, 46)   // LCD background
+  ctx.fillRect(21, 25, 37, 46)
 
-  // 5. Neru head — 8×8 sprite at HEAD_SCALE px/cell
+  // 5. Neru head
   for (let r = 0; r < 8; r++) {
     for (let c = 0; c < 8; c++) {
       const v = HEAD[r][c]
@@ -124,7 +153,7 @@ function draw(ctx: CanvasRenderingContext2D) {
     }
   }
 
-  // 6. Three buttons — 7×7 pixel circles, two-tone shading
+  // 6. Three buttons
   for (const bx of BTN_CENTERS_X) {
     for (let r = 0; r < 7; r++) {
       for (let c = 0; c < 7; c++) {
@@ -154,8 +183,8 @@ export default function PixelCanvas() {
       width={CW}
       height={CH}
       style={{
-        width: 400,
-        height: 650,
+        width: 460,
+        height: 740,
         imageRendering: 'pixelated',
         display: 'block',
       } as React.CSSProperties}
