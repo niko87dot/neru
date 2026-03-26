@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import PixelCanvas from './PixelCanvas'
 
 // ── Palette ───────────────────────────────────────────────────────────────────
 const G   = '#74b83e'
@@ -403,6 +404,11 @@ export default function App() {
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       fontFamily: "'Press Start 2P', monospace",
     }}>
+      <div style={{ display: 'flex', gap: 48, alignItems: 'center' }}>
+
+        {/* ── Canvas preview ─────────────────────────────────────── */}
+        <PixelCanvas />
+
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
         {/* Strap loop — SVG for crisp pixel look */}
@@ -488,6 +494,8 @@ export default function App() {
           </div>
 
         </EggShell>
+      </div>
+
       </div>
     </div>
   )
