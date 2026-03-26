@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
 
-type Phase = 'silence' | 'typing' | 'pause' | 'fadeout' | 'done'
+type Phase = 'silence' | 'typing' | 'pause' | 'fadeout'
 
 const FULL_TEXT = 'Wake up Neru...'
 
 export default function WakeUp({ onDone }: { onDone: () => void }) {
   const [displayText, setDisplayText] = useState('')
   const [phase, setPhase] = useState<Phase>('silence')
-  const [opacity, setOpacity] = useState(1)
+  const [fadeOut, setFadeOut] = useState(false)
   const [cursorVisible, setCursorVisible] = useState(false)
   const cursorBlinks = useRef(0)
 
@@ -50,17 +50,20 @@ export default function WakeUp({ onDone }: { onDone: () => void }) {
     }
 
     if (phase === 'fadeout') {
-      setOpacity(0)
-      const t = setTimeout(() => {
-        localStorage.setItem('neru_intro_seen', 'true')
-        onDone()
-      }, 400)
-      return () => clearTimeout(t)
+      setFadeOut(true)
     }
-  }, [phase, onDone])
+  }, [phase])
+
+  function handleTransitionEnd() {
+    if (fadeOut) {
+      localStorage.setItem('neru_intro_seen', 'true')
+      onDone()
+    }
+  }
 
   return (
     <div
+      onTransitionEnd={handleTransitionEnd}
       style={{
         position: 'fixed',
         top: 0,
@@ -72,8 +75,8 @@ export default function WakeUp({ onDone }: { onDone: () => void }) {
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 9999,
-        opacity,
-        transition: phase === 'fadeout' ? 'opacity 400ms ease' : 'none',
+        opacity: fadeOut ? 0 : 1,
+        transition: 'opacity 600ms ease-in-out',
       }}
     >
       <div
